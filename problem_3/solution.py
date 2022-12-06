@@ -1,10 +1,7 @@
 file = open('./input.txt', 'r')
 
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
-total, priorities = 0, {}
-
-for l in alphabet + alphabet.upper():
-    priorities[l] = len(priorities) + 1  
+total, priorities = 0, { l: i + 1 for i, l in enumerate(alphabet + alphabet.upper()) }
 
 for line in file:
     rucksack = line.strip()
