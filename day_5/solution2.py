@@ -46,4 +46,4 @@ for line in file:
     move(q, c, n)
 
 res = ''.join([s[-1] for s in stacks])
-print(f'Result {res}')
+print(f'Top of Stack: {res}')
