@@ -6,7 +6,7 @@ class Directory:
     def __init__(self, name, parent):
         self.name = name
         self.parent = parent
-        self.contents = []
+        self.contents = {}
         self.dirs = {}
 
 root = Directory('/', None)
@@ -27,6 +27,29 @@ for line in file:
                     current = current.dirs[f]
     else:
         if command[0] == 'dir':
-            current.dirs[command[1]] = Directory(command[1], current)
+            if command[1] not in current.dirs:
+                current.dirs[command[1]] = Directory(command[1], current)
         else:
-            current.contents.append((int(command[0]), command[1]))
+            if command[1] not in current.contents:
+                current.contents[command[1]] = int(command[0])
+
+def dfs(node):
+    t1, t2 = 0, 0
+
+    for v in node.contents.values():
+        t1 += v
+
+    for n in node.dirs.values():
+        t2 += dfs(n)
+
+    total = t1 + t2
+    if total <= 100000:
+        res[0] += total
+
+    return total
+
+res = [0]
+dfs(root)
+
+print(res[0])
+
