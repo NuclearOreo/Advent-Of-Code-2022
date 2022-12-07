@@ -35,7 +35,6 @@ stacks = [
 #     deque(list('P'))
 # ]
 
-
 def move(q: int, c: int, n: int) -> None:
     for _ in range(q):
         stacks[n-1].append(stacks[c-1].pop())
