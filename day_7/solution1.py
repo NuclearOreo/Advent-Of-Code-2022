@@ -1,5 +1,3 @@
-from collections import defaultdict, deque
-
 file = open('./input.txt', 'r')
 
 class Directory:
@@ -33,16 +31,9 @@ for line in file:
             if command[1] not in current.contents:
                 current.contents[command[1]] = int(command[0])
 
-def dfs(node):
-    t1, t2 = 0, 0
+def dfs(node: Directory) -> int:    
+    total = sum([ v for v in node.contents.values() ] + [ dfs(n) for n in node.dirs.values() ] + [0])
 
-    for v in node.contents.values():
-        t1 += v
-
-    for n in node.dirs.values():
-        t2 += dfs(n)
-
-    total = t1 + t2
     if total <= 100000:
         res[0] += total
 
