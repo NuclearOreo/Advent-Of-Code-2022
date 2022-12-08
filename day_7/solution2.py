@@ -33,13 +33,17 @@ for line in file:
 
 def dfs(node: Directory) -> int:    
     total = sum([ v for v in node.contents.values() ] + [ dfs(n) for n in node.dirs.values() ] + [0])
-
-    if total <= 100000:
-        res[0] += total
-
+    sizes.append(total)
     return total
 
-res = [0]
+sizes = []
 dfs(root)
 
-print(f'Total of all size above 100000: {res[0]}')
+sizes.sort()
+
+diff, needed, = 70000000 - sizes[-1], 30000000
+ 
+for s in sizes:
+    if diff + s >= needed:
+        print(f'Size to delete: {s}')
+        break
