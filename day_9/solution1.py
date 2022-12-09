@@ -2,7 +2,6 @@ file = open('input.txt', 'r')
 
 H, T = (0, 0), (0, 0)
 trail = set([(0, 0)])
-
 directions = { 'R': (0, 1), 'L': (0, -1), 'D': (1, 0), 'U': (-1, 0), 'TLC': (-1, -1), 'BRC': (1, 1), 'TRC': (-1, 1), 'BLC': (1, -1) }
 
 def isAdjacent() -> bool:
@@ -22,11 +21,10 @@ def isDiagonal() -> bool:
 
 for line in file:
     D, Q = line.strip().split(' ')
-
     dx, dy = directions[D]
-    prev = H if isDiagonal() else None
 
     for _ in range(int(Q)):
+        prev = H if isDiagonal() else None
         H = (H[0] + dx, H[1] + dy)
         
         if not isAdjacent():
@@ -37,8 +35,4 @@ for line in file:
 
             trail.add(T)
 
-        prev = H if isDiagonal() else None
-
 print(f'Position Tail Visited {len(trail)}')
-
-
