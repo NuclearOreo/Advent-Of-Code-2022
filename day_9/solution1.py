@@ -1,4 +1,4 @@
-file = open('input.txt', 'r')
+file = open('test1.txt', 'r')
 
 H, T = (0, 0), (0, 0)
 trail = set([(0, 0)])
@@ -12,27 +12,25 @@ def isAdjacent() -> bool:
             return True
     return False
 
-def isDiagonal() -> bool:
-    x, y = H
-    for dx, dy in [(1, 1), (-1, -1), (1, -1), (-1, 1)]:
-        if (x + dx, y + dy) == T:
-            return True
-    return False
+def getDirection() -> tuple:
+    a, b = H[0] - T[0], H[1] - T[1]
+    if a < -1: a += 1
+    if a > 1: a -= 1
+    if b < -1: b += 1
+    if b > 1: b -= 1
+    return (a, b)
 
 for line in file:
     D, Q = line.strip().split(' ')
     dx, dy = directions[D]
 
     for _ in range(int(Q)):
-        prev = H if isDiagonal() else None
         H = (H[0] + dx, H[1] + dy)
-        
-        if not isAdjacent():
-            if prev != None:
-                T = prev
-            else:
-                T = (T[0] + dx, T[1] + dy)
 
-            trail.add(T)
+        if not isAdjacent():
+            a, b = getDirection()
+            T = (T[0] + a, T[1] + b)
+
+        trail.add(T)
 
 print(f'Position Tail Visited {len(trail)}')

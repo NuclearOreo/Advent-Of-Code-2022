@@ -1,4 +1,4 @@
-file = open('test2.txt', 'r')
+file = open('input.txt', 'r')
 
 snake = [(0, 0) for _ in range(10)]
 trail = set([(0, 0)])
@@ -12,44 +12,30 @@ def isAdjacent(i: int, j: int) -> bool:
             return True
     return False
 
-def isDiagonal(i: int, j: int) -> bool:
-    x, y = snake[i]
-    for dx, dy in [(1, 1), (-1, -1), (1, -1), (-1, 1)]:
-        if (x + dx, y + dy) == snake[j]:
-            return True
-    return False
+def getDirection(i: int, j: int) -> tuple:
+    a, b = snake[i][0] - snake[j][0], snake[i][1] - snake[j][1]
+    a = a if a != 0 and abs(a) == 2 else a
+    if a > 1: a -= 1
+    if b < -1: b += 1
+    if b > 1: b -= 1
+    return (a, b)
 
 def move(D: str, Q: int) -> None:
     dx, dy = directions[D]
     
     for _ in range(Q):
-        prev = snake[0] if isDiagonal(0, 1) else None
         snake[0] = (snake[0][0] + dx, snake[0][1] + dy)
-
+        
         for i in range(1, 10):
             if not isAdjacent(i - 1, i):
-                newPrev = snake[i] if i < 9 and isDiagonal(i, i + 1) else None
-                
-                if prev != None:
-                    snake[i] = prev
-                else:
-                    snake[i] = (snake[i][0] + dx, snake[i][1] + dy)
-                
-                prev = newPrev
-                trail.add(snake[9])
+                a, b = getDirection(i - 1, i)
+                snake[i] = (snake[i][0] + a, snake[i][1] + b)
+                if i == 9: trail.add(snake[i])
             else:
                 break
-        
-        
-        print(snake)
-    
-    print() 
 
 for line in file:
     D, Q = line.strip().split(' ')
-
-    print(D, Q)
     move(D, int(Q))
-    print()
 
 print(f'Position Tail Visited: {len(trail)}')
