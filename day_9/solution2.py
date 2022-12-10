@@ -14,7 +14,7 @@ def isAdjacent(i: int, j: int) -> bool:
 
 def getDirection(i: int, j: int) -> tuple:
     a, b = snake[i][0] - snake[j][0], snake[i][1] - snake[j][1]
-    a = a if a != 0 and abs(a) == 2 else a
+    if a < -1: a += 1
     if a > 1: a -= 1
     if b < -1: b += 1
     if b > 1: b -= 1
