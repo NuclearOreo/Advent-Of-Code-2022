@@ -1,4 +1,6 @@
-file = open('./test.txt')
+from functools import reduce
+
+file = open('./input.txt')
 
 holdings = []
 operations = []
@@ -29,23 +31,20 @@ for line in file:
 
 rounds, numMonkeys = 10000, len(holdings)
 inspections = [0] * numMonkeys
+mod = reduce(lambda a, b: a * b, isDivisable)
 
 def execute(val: int, ops: list[str]) -> int:
     a = val if ops[0] == 'old' else int(ops[0])
-    b = val if ops[2] == 'old' else int(ops[2])
-    
-    if ops[1] == '*' or a == b:
-        return val
-
+    b = val if ops[2] == 'old' else int(ops[2])    
+    if ops[1] == '*': return a * b
     return a + b
 
 for _ in range(rounds):
-    
     for monkey in range(numMonkeys):
 
         for item in holdings[monkey]:
             inspections[monkey] += 1
-            v = execute(item, operations[monkey])
+            v = execute(item, operations[monkey]) % mod
             
             if v % isDivisable[monkey] == 0:
                 holdings[tossTo[monkey][0]].append(v)
@@ -55,7 +54,6 @@ for _ in range(rounds):
         holdings[monkey] = []
 
             
-print(inspections)
 inspections.sort()
 result = inspections[-1] * inspections[-2]
 
